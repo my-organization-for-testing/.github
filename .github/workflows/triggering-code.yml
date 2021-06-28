@@ -25,11 +25,10 @@ jobs:
         echo "ref: ${{ github.event.client_payload.sha }}"
         echo "token: ${{ github.event.client_payload.token }}"
 
-        for i in "${{ github.event.client_payload.event.commits }}"
-        do 
-          echo $i
-        done
-    
-        
+        for i in "${{ !github.event.client_payload.event.commits[@] }}"  
+        do  
+          echo The key value of element "${{ github.event.client_payload.event.commits[$i] }}" is "$i"  
+        done  
+      
         
         
