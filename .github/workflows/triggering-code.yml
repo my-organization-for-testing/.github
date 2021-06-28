@@ -27,7 +27,7 @@ jobs:
                 
         for i in "${{ github.event.client_payload.event.commits[0].modified }}"  
         do  
-          echo The key value of element "${{ github.event.client_payload.event.commits[0].modified[$i] }}" is "$i"  
+          echo "$i"  
         done  
       
         
