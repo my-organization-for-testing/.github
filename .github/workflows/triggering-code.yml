@@ -20,7 +20,7 @@ jobs:
         enforce_admin: true
     - name: Printing variables
       run: |
-        echo "commits: ${{ toJson(github.event.client_payload.event.commits[0].modified) }}"
+        echo "commits: ${{ toJson(github.event.commits) }}"
         echo "repository: ${{ github.event.client_payload.repository.full_name }}"
         echo "ref: ${{ github.event.client_payload.sha }}"
         echo "token: ${{ github.event.client_payload.token }}"
