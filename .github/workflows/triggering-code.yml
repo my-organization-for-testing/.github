@@ -26,11 +26,35 @@ jobs:
         echo "token: ${{ github.event.client_payload.token }}"
         
         list=($(echo "${{ toJson(github.event.client_payload.event.commits[0].modified) }}" | tr -d '[' | tr -d ']' ))
-
+        img_list=""
+        repo=$(echo ${{ github.event.client_payload.repository.full_name }} | awk -F'/' '{print $2}')
         for i in "${list[@]}"
         do
+          folder=$(echo $i | awk -F'/' '{print $1}')
+          echo $folder
           
-          echo $i
+          if [[ "$repo" == "human-sensing" ]]
+          then
+            if [[ "$folder" == "googleVisionAI" ]]
+            then
+              img_list="$img_list google-vision"
+            elif [[ "$folder" == "yarpOpenPose" || "$folder" == "faceLandmarks" ]]
+            then
+              img_list="$img_list human-sensing"
+            fi
+          elif [[ "$repo" == "speech" ]]
+          then
+            img_list="$img_list speech"
+          elif [[ "$repo" == "calibration-supervisor" ]]
+ 	        then
+            if [[ "$folder" == "cameraSupervision" ]]
+            then
+              img_list="$img_list supervise-calib"
+            elif [[ "$folder" == "demoRedBallCalibration" ]]
+ 	          then
+ 	            img_list="$img_list grasp-the-ball"
+ 	          fi
+          fi
         done
         
         
