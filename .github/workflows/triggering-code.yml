@@ -24,11 +24,8 @@ jobs:
         echo "repository: ${{ github.event.client_payload.repository.full_name }}"
         echo "ref: ${{ github.event.client_payload.sha }}"
         echo "token: ${{ github.event.client_payload.token }}"
-                
-        for i in "${{ github.event.client_payload.event.commits[0].modified }}"  
-        do  
-          echo "$i"  
-        done  
-      
+        
+        list=($(echo "${{ toJson(github.event.client_payload.event.commits[0].modified) }}"))
+        echo ${list[@]}
         
         
