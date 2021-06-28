@@ -24,6 +24,21 @@ jobs:
         echo "repository: ${{ github.event.client_payload.repository.full_name }}"
         echo "ref: ${{ github.event.client_payload.sha }}"
         echo "token: ${{ github.event.client_payload.token }}"
+        
+        commits= ${{ github.event.client_payload.event.commits }}
+        
+        echo "commits n. ${commits[@]}"
+        for i in "${commits[@]}"
+        do 
+          folder=$(echo $i.modified | awk -F'/' '{print $1}' | tr -d '"' | tr -d '[' | tr -d ']')
+          if [[ "$folder" == "googleVisionAI" ]]
+          then
+            img_list="$img_list google-vision"
+          elif [[ "$folder" == "yarpOpenPose" || "$folder" == "faceLandmarks" ]]
+          then
+            img_list="$img_list human-sensing"
+          fi
+        done
     
         
         
