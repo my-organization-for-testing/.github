@@ -26,6 +26,10 @@ jobs:
         echo "token: ${{ github.event.client_payload.token }}"
         
         list=($(echo "${{ toJson(github.event.client_payload.event.commits[0].modified) }}"))
-        echo ${list[@]}
+        for i in "${list[@]}"
+        do
+          echo $i
+        done
+        
         
         
