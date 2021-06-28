@@ -25,8 +25,8 @@ jobs:
         echo "ref: ${{ github.event.client_payload.sha }}"
         echo "token: ${{ github.event.client_payload.token }}"
         
-        list=($(echo "${{ toJson(github.event.client_payload.event.commits[0].modified) }}") | tr -d '[' | tr -d ']' )
-        
+        list=($(echo "${{ toJson(github.event.client_payload.event.commits[0].modified) }}" | tr -d '[' | tr -d ']' ))
+
         for i in "${list[@]}"
         do
           
