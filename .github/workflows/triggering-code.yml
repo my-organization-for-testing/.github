@@ -3,7 +3,8 @@ name: Triggering Code
 on:
   repository_dispatch:
     types: [org-workflow-bot]  
-   
+  workflow_dispatch:
+
 jobs:
   register:
     runs-on: ubuntu-latest
@@ -26,7 +27,7 @@ jobs:
     #    token: ${{ github.event.client_payload.token }}
     - name: Printing variables
       run: |
-        echo "payload: ${{ github.event.client_payload }}"
+        echo "payload: ${{ toJson(github.event.client_payload) }}"
         echo "repository: ${{ github.event.client_payload.repository.full_name }}"
         echo "ref: ${{ github.event.client_payload.sha }}"
         echo "token: ${{ github.event.client_payload.token }}"
