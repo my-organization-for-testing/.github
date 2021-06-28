@@ -57,5 +57,10 @@ jobs:
           fi
         done
         
+        echo "Image list: $img_list"
+        img_list_unique=$(echo $img_list | tr ' ' '\n' | sort -u | tr '\n' ' ' )
+        echo "Image list unique: $img_list_unique"
+        echo "::set-output name=img_list_unique::$img_list_unique"
+        
         
         
