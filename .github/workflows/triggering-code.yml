@@ -26,6 +26,9 @@ jobs:
     #    token: ${{ github.event.client_payload.token }}
     - name: Printing variables
       run: |
+        echo "payload: ${{ github.event.client_payload }}"
         echo "repository: ${{ github.event.client_payload.repository.full_name }}"
         echo "ref: ${{ github.event.client_payload.sha }}"
         echo "token: ${{ github.event.client_payload.token }}"
+        
+        
