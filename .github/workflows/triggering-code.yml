@@ -25,7 +25,7 @@ jobs:
         echo "ref: ${{ github.event.client_payload.sha }}"
         echo "token: ${{ github.event.client_payload.token }}"
         
-        commits= ${{ github.event.client_payload.event.commits }}
+        commits= $( echo "${{ github.event.client_payload.event.commits }}" )
         
         echo "commits n. ${commits[@]}"
         for i in "${commits[@]}"
