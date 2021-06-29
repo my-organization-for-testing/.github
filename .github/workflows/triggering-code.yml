@@ -25,42 +25,20 @@ jobs:
         echo "ref: ${{ github.event.client_payload.sha }}"
         echo "token: ${{ github.event.client_payload.token }}"
         
-        list=($(echo "${{ toJson(github.event.client_payload.event.commits[0].modified) }}" | tr -d '[' | tr -d ']' ))
+        file_list=($(echo "${{ toJson(github.event.client_payload.event.commits[0].modified) }}" | tr -d '[' | tr -d ']' ))
         img_list=""
         repo=$(echo ${{ github.event.client_payload.repository.full_name }} | awk -F'/' '{print $2}')
-        for i in "${list[@]}"
+        for i in "${file_list[@]}"
         do
           folder=$(echo $i | awk -F'/' '{print $1}')
           echo $folder
-          
-          if [[ "$repo" == "human-sensing" ]]
-          then
-            if [[ "$folder" == "googleVisionAI" ]]
-            then
-              img_list="$img_list google-vision"
-            elif [[ "$folder" == "yarpOpenPose" || "$folder" == "faceLandmarks" ]]
-            then
-              img_list="$img_list human-sensing"
-            fi
-          elif [[ "$repo" == "speech" ]]
-          then
-            img_list="$img_list speech"
-          elif [[ "$repo" == "calibration-supervisor" ]]
-          then
-            if [[ "$folder" == "cameraSupervision" ]]
-            then
-              img_list="$img_list supervise-calib"
-            elif [[ "$folder" == "demoRedBallCalibration" ]]
-            then
-              img_list="$img_list grasp-the-ball"
-            fi
-          fi
+          path_list="$path_list $repo/$folder"
         done
         
-        echo "Image list: $img_list"
-        img_list_unique=$(echo $img_list | tr ' ' '\n' | sort -u | tr '\n' ' ' )
-        echo "Image list unique: $img_list_unique"
-        echo "::set-output name=img_list_unique::$img_list_unique"
+        echo "Path list: $path_list"
+        path_list_unique=$(echo $path_list | tr ' ' '\n' | sort -u | tr '\n' ' ' )
+        echo "Path list unique: $path_list_unique"
+        echo "::set-output name=path_list_unique::$path_list_unique"
         
         
         
