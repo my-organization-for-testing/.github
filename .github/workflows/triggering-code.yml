@@ -2,7 +2,9 @@ name: Triggering Code
 
 on:
   repository_dispatch:
-    types: [org-workflow-bot]  
+    types: [org-workflow-bot]
+    paths:
+    - '!**/README.md'
   workflow_dispatch:
 
 jobs:
