@@ -2,4 +2,4 @@ workflows_repository: our-workflows
 include_workflows_repository: false
 exclude:
   paths:
-  - speech/**
+  - **/speechInteraction
