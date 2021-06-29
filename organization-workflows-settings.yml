@@ -1,5 +1,2 @@
 workflows_repository: our-workflows
 include_workflows_repository: false
-exclude:
-  repositories:
-  - 'speech/other-speech-folder/**'
