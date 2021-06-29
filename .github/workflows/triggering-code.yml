@@ -3,7 +3,6 @@ name: Triggering Code
 on:
   repository_dispatch:
     types: [org-workflow-bot]
-  workflow_dispatch:
 
 jobs:
   register:
@@ -18,7 +17,8 @@ jobs:
         name: ${{ github.workflow }}
         enforce: true
         enforce_admin: true
-    - name: Printing variables
+    - name: Creating image path list
+      id: get_image_path_list
       run: |
         echo "commits: ${{ toJson(github.event.client_payload.event.commits[0].modified) }}"
         echo "repository: ${{ github.event.client_payload.repository.full_name }}"
@@ -35,10 +35,26 @@ jobs:
           path_list="$path_list $repo/$folder"
         done
         
-        echo "Path list: $path_list"
         path_list_unique=$(echo $path_list | tr ' ' '\n' | sort -u | tr '\n' ' ' )
-        echo "Path list unique: $path_list_unique"
+        echo "Path list: $path_list_unique"
         echo "::set-output name=path_list_unique::$path_list_unique"
+    - name: Get Token
+      id: get_workflow_token
+      uses: tibdex/github-app-token@v1
+      with:
+        private_key: ${{ secrets.ICUB_TECH_CODE_KEY }}
+        app_id: ${{ secrets.ICUB_TECH_CODE_ID }}
+        repository: icub-tech-iit/code
+            
+    - name: Repository dispatch to code
+      uses: peter-evans/repository-dispatch@v1
+      env:
+        GITHUB_APPS_TOKEN: ${{ steps.get_workflow_token.outputs.token }}
+      with:
+        token: ${{ env.GITHUB_APPS_TOKEN }}
+        repository: icub-tech-iit/code
+        event-type: repository_trigger
+        client-payload: '{"type": "repository_trigger", "img_list": "${{ steps.get_image_path_list.path_list_unique }}" }'
         
         
         
