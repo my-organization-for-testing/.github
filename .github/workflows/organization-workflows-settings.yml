@@ -1,8 +1,0 @@
-workflows_repository: .github
-include_workflows_repository: false
-exclude:
-  repositories:
-  - '**/README.md'
-include:
-  repositories:
-  - 'speechInteraction/**'
