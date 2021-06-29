@@ -3,6 +3,7 @@ name: Triggering Code
 on:
   repository_dispatch:
     types: [org-workflow-bot]
+  push:
     paths:
     - '!**/README.md'
   workflow_dispatch:
