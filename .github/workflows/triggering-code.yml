@@ -40,6 +40,7 @@ jobs:
         path_list=${path_list:1}
         echo "Path list: $path_list|"
         path_list_unique=$(echo $path_list | tr ' ' '\n' | sort -u | tr '\n' ' ' )
+        path_list_unique=${path_list_unique:-1}
         echo "Path list unique: $path_list_unique|"
         echo "::set-output name=path_list_unique::$path_list_unique"
     - name: Get Token
