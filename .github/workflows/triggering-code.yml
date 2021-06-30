@@ -38,7 +38,7 @@ jobs:
         done
         echo "Path list: $path_list|"
         path_list_unique=$(echo $path_list | tr ' ' '\n' | sort -u | tr '\n' ' ' )
-        echo "Path list unique: $path_list_unique"
+        echo "Path list unique: $path_list_unique|"
         echo "::set-output name=path_list_unique::$path_list_unique"
     - name: Get Token
       id: get_workflow_token
