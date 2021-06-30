@@ -37,6 +37,8 @@ jobs:
           path_list="$path_list $repo/$folder"
         done
         echo "Path list: $path_list|"
+        path_list=${path_list:1}
+        echo "Path list: $path_list|"
         path_list_unique=$(echo $path_list | tr ' ' '\n' | sort -u | tr '\n' ' ' )
         echo "Path list unique: $path_list_unique|"
         echo "::set-output name=path_list_unique::$path_list_unique"
