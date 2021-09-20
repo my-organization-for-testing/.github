@@ -37,7 +37,7 @@ jobs:
         do
           folder=$(echo $i | awk -F'/' '{print $1}')
           echo $folder
-          if [[ contains( ${our_directories[@]}, $folder ) ]]
+          if printf '%s\n' "${our_directories[@]}" | grep -q -P '^'$folder'$'
           then 
             folder_found=true
             path_list="$path_list $repo/$folder"
