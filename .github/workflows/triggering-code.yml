@@ -52,7 +52,7 @@ jobs:
         echo "::set-output name=folder_found::$folder_found"
     - name: Get Token
       id: get_workflow_token
-      if: ${{ steps.get_image_path_list.outputs.folder_found }}
+      if: steps.get_image_path_list.outputs.folder_found == 'true'
       uses: tibdex/github-app-token@v1
       with:
         private_key: ${{ secrets.ICUB_TECH_CODE_KEY }}
@@ -60,7 +60,7 @@ jobs:
         repository: lauracavaliere/code
             
     - name: Repository dispatch to code
-      if: ${{ steps.get_image_path_list.outputs.folder_found }}
+      if: steps.get_image_path_list.outputs.folder_found == 'true'
       uses: peter-evans/repository-dispatch@v1
       env:
         GITHUB_APPS_TOKEN: ${{ steps.get_workflow_token.outputs.token }}
