@@ -8,12 +8,6 @@ jobs:
   register:
     runs-on: ubuntu-latest
     steps:
-    - id: get-changed-files
-      uses: jitterbit/get-changed-files@v1
-    - run: |
-        for changed_file in ${{ steps.files.outputs.all }}; do
-         echo "Do something with this ${changed_file}."
-        done
     - uses: SvanBoxel/organization-workflow@main
       with:
         id: ${{ github.event.client_payload.id }}
