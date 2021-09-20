@@ -26,6 +26,8 @@ jobs:
     - name: Creating image path list
       id: get_image_path_list
       run: |
+        our_directories=('speechInteraction' 'yarpOpenPose' 'googleVisionAI' 'faceLandmarks' 'cameraSupervision' 'demoRedBallCalibration')
+        echo "our directories: ${our_directories[@]}"
         echo "commits: ${{ toJson(github.event.client_payload.event.commits[0].modified) }}"
         echo "repository: ${{ github.event.client_payload.repository.full_name }}"
         echo "ref: ${{ github.event.client_payload.sha }}"
@@ -36,12 +38,18 @@ jobs:
         path_list=""
         repo=$(echo ${{ github.event.client_payload.repository.full_name }} | awk -F'/' '{print $2}')
         echo "Repo: $repo"
+        folder_found=false
         for i in "${file_list[@]}"
         do
           folder=$(echo $i | awk -F'/' '{print $1}')
           echo $folder
-          path_list="$path_list $repo/$folder"
+          if [[ contains( ${our_directories[@]}, $folder ) ]]
+          then 
+            folder_found=true
+            path_list="$path_list $repo/$folder"
+          fi        
         done
+        echo "folder_found: $folder_found"
         echo "Path list: $path_list"
         path_list_unique=$(echo $path_list | tr ' ' '\n' | sort -u | tr '\n' ' ' )
         path_list_unique=$(echo $path_list_unique | sed 's/ *$//g')
