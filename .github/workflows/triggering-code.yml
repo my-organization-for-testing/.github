@@ -30,6 +30,7 @@ jobs:
         file_list=($(echo "${{ toJson(github.event.client_payload.event.commits[0].modified) }}" | tr -d '[' | tr -d ']' ))
         echo "File list: ${file_list[@]}"
         path_list=""
+        path_list_unique=""
         repo=$(echo ${{ github.event.client_payload.repository.full_name }} | awk -F'/' '{print $2}')
         echo "Repo: $repo"
         for i in "${file_list[@]}" 
