@@ -24,9 +24,9 @@ jobs:
         echo "excluded dirs: ${excluded_dirs[@]}"
         branch_name=$(echo ${{ toJson(github.event.client_payload.event.ref) }} | awk -F'/' '{print $3}')
         echo "branch name: $branch_name"
-        commits_added=${{ toJson(github.event.client_payload.event.commits[0].added) }}
-        commits_modified=${{ toJson(github.event.client_payload.event.commits[0].modified) }}
-        commits_removed=${{ toJson(github.event.client_payload.event.commits[0].removed) }}
+        commits_added="${{ toJson(github.event.client_payload.event.commits[0].added) }}"
+        commits_modified="${{ toJson(github.event.client_payload.event.commits[0].modified) }}"
+        commits_removed="${{ toJson(github.event.client_payload.event.commits[0].removed) }}"
         echo "commits.added: $commits_added"
         echo "commits.modified: $commits_modified"
         echo "commits.removed: $commits_removed"
