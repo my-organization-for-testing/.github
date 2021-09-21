@@ -22,6 +22,7 @@ jobs:
       run: |
         excluded_dirs=('LICENCE' '.gitignore' '.md' '.gitmodules' '.github/workflows')
         echo "excluded dirs: ${excluded_dirs[@]}"
+        echo "github event: ${{ toJson(github.event) }}"
         echo "commits.added: ${{ toJson(github.event.client_payload.event.commits[0].added) }}"
         echo "commits.modified: ${{ toJson(github.event.client_payload.event.commits[0].modified) }}"
         echo "commits.removed: ${{ toJson(github.event.client_payload.event.commits[0].removed) }}"
