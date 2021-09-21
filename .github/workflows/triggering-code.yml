@@ -22,7 +22,8 @@ jobs:
       run: |
         excluded_dirs=('LICENCE' '.gitignore' '.md' '.gitmodules' '.github/workflows')
         echo "excluded dirs: ${excluded_dirs[@]}"
-        echo "github event: ${{ toJson(github.event.client_payload.event.ref) }}"
+        branch_name=$(echo ${{ toJson(github.event.client_payload.event.ref) }} | awk -F'/' '{print $3}')
+        echo "branch name: $branch_name"
         echo "commits.added: ${{ toJson(github.event.client_payload.event.commits[0].added) }}"
         echo "commits.modified: ${{ toJson(github.event.client_payload.event.commits[0].modified) }}"
         echo "commits.removed: ${{ toJson(github.event.client_payload.event.commits[0].removed) }}"
@@ -37,26 +38,32 @@ jobs:
         path_list_unique=""
         repo=$(echo ${{ github.event.client_payload.repository.full_name }} | awk -F'/' '{print $2}')
         echo "Repo: $repo"
-        for i in "${file_list[@]}" 
-        do
-          directory=$(echo $i | awk -F'/' '{print $1}')
-          echo "Directory: $directory"
-          elem_found=false
-          echo "Each file: $i"
-          for elem in ${excluded_dirs[@]}
+        if [[ $branch_name == 'main' || $branch_name == 'master' ]]
+        then
+          for i in "${file_list[@]}" 
           do
-            if grep -q "$elem" <<< "$i"
+            directory=$(echo $i | awk -F'/' '{print $1}')
+            echo "Directory: $directory"
+            elem_found=false
+            echo "Each file: $i"
+            for elem in ${excluded_dirs[@]}
+            do
+              if grep -q "$elem" <<< "$i"
+              then
+                elem_found=true
+                echo "File is part of the excluded elements."
+              fi
+            done
+            if [[ $elem_found == false ]]
             then
-              elem_found=true
-              echo "File is part of the excluded elements."
-            fi
+              echo "do the pipeline"
+              path_list="$path_list $repo/$directory"
+            fi    
           done
-          if [[ $elem_found == false ]]
-          then
-            echo "do the pipeline"
-            path_list="$path_list $repo/$directory"
-          fi    
-        done
+        else
+          echo "The push event occurred on a branch different from master/main"
+          exit 1
+        fi
         echo "Path list: $path_list"
         echo "Path list lenght: ${#path_list}"
         path_list_length=${#path_list}
