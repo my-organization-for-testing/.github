@@ -39,9 +39,11 @@ jobs:
           elem_found=false
           for elem in ${excluded_dirs[@]}
           do
+            echo "Each file: $i"
             if grep -q "$elem" <<< "$i"
             then
               elem_found=true
+              echo "File is part of the excluded elements."
             fi
           done
           if [[ $elem_found == false ]]
