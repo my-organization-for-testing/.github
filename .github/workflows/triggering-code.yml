@@ -34,8 +34,8 @@ jobs:
         echo "Repo: $repo"
         for i in "${file_list[@]}" 
         do
-          folder=$(echo $i | awk -F'/' '{print $1}')
-          echo "Folder: $folder"
+          directory=$(echo $i | awk -F'/' '{print $1}')
+          echo "Directory: $directory"
           elem_found=false
           for elem in ${excluded_dirs[@]}
           do
@@ -49,7 +49,7 @@ jobs:
           if [[ $elem_found == false ]]
           then
             echo "do the pipeline"
-            path_list="$path_list $repo/$folder"
+            path_list="$path_list $repo/$directory"
           fi    
         done
         echo "Path list: $path_list"
@@ -57,10 +57,10 @@ jobs:
         path_list_unique=$(echo $path_list_unique | sed 's/ *$//g')
         echo "Path list unique: $path_list_unique"
         echo "::set-output name=path_list_unique::$path_list_unique"
-        echo "::set-output name=folder_found::$folder_found"
+        echo "::set-output name=elem_found::$elem_found"
     - name: Get Token
       id: get_workflow_token
-      if: steps.get_image_path_list.outputs.folder_found == 'true'
+      if: ${#steps.get_image_path_list.outputs.path_list_unique} > 0 
       uses: tibdex/github-app-token@v1
       with:
         private_key: ${{ secrets.ICUB_TECH_CODE_KEY }}
@@ -68,7 +68,7 @@ jobs:
         repository: lauracavaliere/code
             
     - name: Repository dispatch to code
-      if: steps.get_image_path_list.outputs.folder_found == 'true'
+      if: ${#steps.get_image_path_list.outputs.path_list_unique} > 0 
       uses: peter-evans/repository-dispatch@v1
       env:
         GITHUB_APPS_TOKEN: ${{ steps.get_workflow_token.outputs.token }}
