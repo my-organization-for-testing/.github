@@ -38,9 +38,9 @@ jobs:
           directory=$(echo $i | awk -F'/' '{print $1}')
           echo "Directory: $directory"
           elem_found=false
+          echo "Each file: $i"
           for elem in ${excluded_dirs[@]}
           do
-            echo "Each file: $i"
             if grep -q "$elem" <<< "$i"
             then
               elem_found=true
@@ -54,6 +54,7 @@ jobs:
           fi    
         done
         echo "Path list: $path_list"
+        echo "Path list lenght: ${#path_list}"
         path_list_unique=$(echo $path_list | tr ' ' '\n' | sort -u | tr '\n' ' ' )
         path_list_unique=$(echo $path_list_unique | sed 's/ *$//g')
         echo "Path list unique: $path_list_unique"
