@@ -22,12 +22,15 @@ jobs:
       run: |
         excluded_dirs=('LICENCE' '.gitignore' '.md' '.gitmodules' '.github/workflows')
         echo "excluded dirs: ${excluded_dirs[@]}"
-        echo "commits: ${{ toJson(github.event.client_payload.event.commits[0]) }}"
+        echo "commits.added: ${{ toJson(github.event.client_payload.event.commits[0].added) }}"
+        echo "commits.modified: ${{ toJson(github.event.client_payload.event.commits[0].modified) }}"
+        echo "commits.removed: ${{ toJson(github.event.client_payload.event.commits[0].removed) }}"
         echo "repository: ${{ github.event.client_payload.repository.full_name }}"
         echo "ref: ${{ github.event.client_payload.sha }}"
         echo "token: ${{ github.event.client_payload.token }}"
-        
-        file_list=($(echo "${{ toJson(github.event.client_payload.event.commits[0].modified) }}" | tr -d '[' | tr -d ']' ))
+        all_commits="${{ toJson(github.event.client_payload.event.commits[0].added) }} ${{ toJson(github.event.client_payload.event.commits[0].modified) }} ${{ toJson(github.event.client_payload.event.commits[0].removed) }}" 
+        echo "all commits: $all_commits"
+        file_list=($(echo "$all_commits" | tr -d '[' | tr -d ']' ))
         echo "File list: ${file_list[@]}"
         path_list=""
         path_list_unique=""
