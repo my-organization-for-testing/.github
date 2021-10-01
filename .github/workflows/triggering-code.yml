@@ -60,7 +60,6 @@ jobs:
         fi
         path_list_unique=$(echo $path_list | tr ' ' '\n' | sort -u | tr '\n' ' ' )
         path_list_unique=$(echo $path_list_unique | sed 's/ *$//g')
-        echo "Directories to dispatch: $path_list_unique"
         echo "::set-output name=path_list_unique::$path_list_unique"
         echo "::set-output name=elem_found::$elem_found"
         
