@@ -41,7 +41,6 @@ jobs:
             for i in "${file_list[@]}" 
             do
               directory=$(echo $i | awk -F'/' '{print $1}')
-              echo "Directory: $directory"
               elem_found=false
               for elem in ${excluded_dirs[@]}
               do
@@ -61,7 +60,7 @@ jobs:
         fi
         path_list_unique=$(echo $path_list | tr ' ' '\n' | sort -u | tr '\n' ' ' )
         path_list_unique=$(echo $path_list_unique | sed 's/ *$//g')
-        echo "Repositories to dispatch: $path_list_unique"
+        echo "Directories to dispatch: $path_list_unique"
         echo "::set-output name=path_list_unique::$path_list_unique"
         echo "::set-output name=elem_found::$elem_found"
         
