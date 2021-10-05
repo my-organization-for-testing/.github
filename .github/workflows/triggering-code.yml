@@ -17,6 +17,7 @@ jobs:
         name: ${{ github.workflow }}
         enforce: true
         enforce_admin: true
+        
     - name: Creating image path list
       id: get_image_path_list
       run: |
@@ -70,7 +71,7 @@ jobs:
       with:
         private_key: ${{ secrets.ICUB_TECH_CODE_KEY }}
         app_id: ${{ secrets.ICUB_TECH_CODE_ID }}
-        repository: lauracavaliere/code
+        repository: ilaria-carlini/code
             
     - name: Repository dispatch to code
       if: steps.get_image_path_list.outputs.path_list_unique != ''
@@ -79,7 +80,7 @@ jobs:
         GITHUB_APPS_TOKEN: ${{ steps.get_workflow_token.outputs.token }}
       with:
         token: ${{ env.GITHUB_APPS_TOKEN }}
-        repository: lauracavaliere/code
+        repository: ilaria-carlini/code
         event-type: robotology_trigger
         client-payload: '{"type": "robotology_trigger", "paths": "${{ steps.get_image_path_list.outputs.path_list_unique }}" }'
         
